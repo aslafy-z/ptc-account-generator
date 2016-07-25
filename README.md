@@ -20,4 +20,4 @@ npm start
 # TODO
 
 - [ ] Babel compiling at releasing
-- [ ] ...
+- [ ] Handle overload response from niantic servers

@@ -2,7 +2,7 @@ require('babel-polyfill');
 require('babel-register');
 
 
-var createAccount = require('./ptc-account-generator').default
+var createAccount = require('./src/ptc-account-generator').default
 var STORE_FILE = './accounts.txt';
 
 createAccount()
