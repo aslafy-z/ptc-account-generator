@@ -1,7 +1,6 @@
 import Nightmare from 'nightmare';
 import faker from 'faker';
 import mailbox from 'node-guerrilla';
-import sync from 'synchronize';
 import fetch from 'node-fetch'
 
 function pad(n, width, z = '0') {
@@ -14,7 +13,7 @@ function rand(min, max, n = 1) {
   return pad(rand, n);
 }
 
-const ACCOUNT_LANGUAGE = 'en';
+const ACCOUNT_LANGUAGE = 'fr';
 const PROXY_COUNTRY = 'FR';
 const GUERRILLAMAIL_HOST = 'sharklasers.com';
 const API_ENDPOINT = 'https://club.pokemon.com/us/pokemon-trainer-club/sign-up/';
