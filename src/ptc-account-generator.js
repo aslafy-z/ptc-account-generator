@@ -1,35 +1,33 @@
 import Nightmare from 'nightmare';
-import faker from 'faker';
+import random_name from 'node-random-name';
 import mailbox from 'node-guerrilla';
 import fetch from 'node-fetch'
+import prettyjson from 'prettyjson';
 
-function pad(n, width, z = '0') {
-  n = n + '';
-  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
-}
-
-function rand(min, max, n = 1) {
-  const rand = Math.floor(Math.random() * (max - min + 1)) + min;
-  return pad(rand, n);
-}
-
-const ACCOUNT_LANGUAGE = 'fr';
-const PROXY_COUNTRY = 'FR';
+const PROXY_COUNTRY = 'US';
 const GUERRILLAMAIL_HOST = 'sharklasers.com';
 const API_ENDPOINT = 'https://club.pokemon.com/us/pokemon-trainer-club/sign-up/';
 const MAILFETCH_ATTEMPTS = 200;
 
+function rand(min, max, n = 1) {
+  const rand = (Math.floor(Math.random() * (max - min + 1)) + min) + '';
+  return rand.length >= n ? rand : new Array(n - rand.length + 1).join('0') + rand;
+}
+
+function getUsername() {
+  const name = random_name();
+  return `${name.replace(/ /g, '')}${rand(0, 9999)}`;
+}
+
 export default async function (newConfig = {}) {
-  faker.locale = ACCOUNT_LANGUAGE;
-  const identity = faker.helpers.createCard();
   const emailAccount = await mailbox.get_email();
 
-  const username = `${identity['username'].replace(/\./g, '')}${rand(0, 9999)}`;
+  const username = getUsername();
   const email = `${emailAccount.alias}@${GUERRILLAMAIL_HOST}`;
 
   console.log('Generating identity...')
 
-  let config = {
+  const config = {
     email,
     username,
     password: `P${username}`,
@@ -38,7 +36,7 @@ export default async function (newConfig = {}) {
     emailAccount,
   };
 
-  console.log(config);
+  console.log(prettyjson.render(config));
 
   console.log('Retrieving proxy...');
 
@@ -94,3 +92,4 @@ export default async function (newConfig = {}) {
   console.log('Account succefully activated!');
   return config;
 }
+
